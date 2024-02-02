@@ -1,0 +1,24 @@
+<div id="map"></div>
+
+<div class="overflow-x-auto">
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Adresse</th>
+        <th>SP98</th>
+        <th>SP95</th>
+        <th>Diesel</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of displayedData; let i = index">
+        <th>{{ i + 1 }}</th>
+        <td>{{ data.adresse + " " + data.cp + " " + data.ville }}</td>
+        <td>{{ data.sp98_prix }}</td>
+        <td>{{ data.e10_prix }}</td>
+        <td>{{ data.gazole_prix }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

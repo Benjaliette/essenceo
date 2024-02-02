@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { GasolineModule } from './gasoline/gasoline.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @Component({
   selector: 'app-root',
@@ -8,25 +13,13 @@ import { Router, RouterOutlet } from '@angular/router';
   imports: [
     RouterOutlet,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule,
+    LeafletModule,
+    GasolineModule,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit{
-  myForm!: FormGroup;
-
-  constructor(private router: Router) {}
-
-  ngOnInit(): void {
-    this.myForm = new FormGroup({
-      city: new FormControl('', Validators.required),
-      gasolineType: new FormControl('Super 95 (E10)', Validators.required)
-    })
-  }
-
-  search() {
-    console.log('Your form data : ', this.myForm.value);
-    // this.router.navigate(["/results"]);
-  }
+export class AppComponent {
 }

@@ -1,6 +1,6 @@
 <div class="navbar bg-base-100 border-b">
   <div class="navbar-start">
-    <a class="btn btn-ghost text-xl">essencéo</a>
+    <a class="btn btn-ghost text-xl" [routerLink]="['/']">essencéo</a>
   </div>
   <div class="navbar-end">
     <button class="btn btn-ghost btn-circle">
@@ -15,40 +15,4 @@
   </div>
 </div>
 
-<div class="hero min-h-screen bg-base-200">
-  <div class="hero-content flex-col lg:flex-row-reverse">
-    <div class="text-center lg:text-left">
-      <h1 class="text-5xl font-bold">Faites le plein !</h1>
-      <p class="py-6">Comparez les meilleurs prix des stations-essences ouvertes et proches de chez vous</p>
-    </div>
-    <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-      <form class="card-body" [formGroup]="myForm" (ngSubmit)="search()">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Ville</span>
-          </label>
-          <input type="text" placeholder="Chercher ..." class="input input-bordered" formControlName="city" />
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Quel carburant ?</span>
-          </label>
-          <select class="select select-bordered w-full max-w-xs" formControlName="gasolineType">
-            <option>Super 95 (E10)</option>
-            <option>Super 98</option>
-            <option>Gazole</option>
-            <option>Hydrogène</option>
-            <option>AdBlue</option>
-            <option>Électrique</option>
-          </select>
-        </div>
-        <div class="form-control mt-6">
-          <button class="btn btn-success text-white" [disabled]="myForm.invalid">
-            COMPAREZ
-            <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M11.5 7a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-.82 4.74a6 6 0 1 1 1.06-1.06l3.04 3.04a.75.75 0 1 1-1.06 1.06z" clip-rule="evenodd"/></svg>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+<router-outlet></router-outlet>
