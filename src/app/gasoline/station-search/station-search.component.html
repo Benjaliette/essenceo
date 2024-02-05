@@ -1,6 +1,6 @@
-<div class="hero min-h-screen bg-base-200">
+<div class="hero min-h-screen" style="background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url(https://images.pexels.com/photos/3651579/pexels-photo-3651579.jpeg);">
   <div class="hero-content flex-col lg:flex-row-reverse">
-    <div class="text-center lg:text-left">
+    <div class="text-center lg:text-left text-white">
       <h1 class="text-5xl font-bold">Faites le plein !</h1>
       <p class="py-6">Comparez les meilleurs prix des stations-essences ouvertes et proches de chez vous</p>
     </div>
@@ -8,9 +8,22 @@
       <form class="card-body" [formGroup]="myForm" (ngSubmit)="search()">
         <div class="form-control">
           <label class="label">
-            <span class="label-text">Ville</span>
+            <span class="label-text">Lieu</span>
           </label>
-          <input type="text" placeholder="Chercher ..." class="input input-bordered" formControlName="city" />
+          <div class="dropdown dropdown-end w-full">
+            <input
+              type="text"
+              placeholder="Chercher ..."
+              class="input input-bordered w-full"
+              formControlName="city"
+              (input)="handleInput($event)"
+            />
+            <autocomplete-search
+              *ngIf="addresses && addresses.length > 2"
+              [addresses]="addresses"
+              (onSelect)="getAddress($event)"
+            ></autocomplete-search>
+          </div>
         </div>
         <div class="form-control">
           <label class="label">

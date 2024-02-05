@@ -1,91 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SearchService } from '../search.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import * as Leaflet from 'leaflet';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { SearchTerm } from '../search-terms';
+import { Loader } from '@googlemaps/js-api-loader';
+import { environment } from '../../../environments/environment.development';
+import * as mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-station-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    LeafletModule
-  ],
+  imports: [CommonModule],
+  providers: [],
   templateUrl: './station-list.component.html',
-  styleUrl: './station-list.component.scss'
+  styleUrl: './station-list.component.scss',
 })
 export class StationListComponent implements OnInit {
   public displayedData: any;
-  city: string | null = "";
-  gasolineType: string | null = "";
-  // options: Leaflet.MapOptions = {
-  //   layers: getLayers(),
-  //   zoom: 12,
-  //   center: new Leaflet.LatLng(43.530147, 16.488932)
-  // };
-  icon = {
-    icon: Leaflet.icon({
-      iconSize: [ 25, 41 ],
-      iconAnchor: [ 13, 0 ],
-      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-      shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
-   })
-};
+  query: SearchTerm = {
+    carburant: '',
+    lat: '',
+    lon: '',
+  };
 
-  constructor(private searchService: SearchService, private route: ActivatedRoute) {}
+  map: mapboxgl.Map | undefined;
+  style = 'mapbox://styles/mapbox/streets-v12';
+
+  constructor(
+    private searchService: SearchService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
-      this.city = params.get("ville");
-      this.gasolineType = params.get("carburant");
+      this.query = {
+        carburant: params.get('carburant'),
+        lat: params.get('lat'),
+        lon: params.get('lon'),
+      };
     });
 
-    if (this.city != null && this.gasolineType != null) {
-      this.searchService.search(this.city, this.gasolineType)
-      .subscribe(data => {
-        this.displayedData = data.results;
-        data.results.forEach((element: any) => {
-          const marker = Leaflet.marker([element.latitude / 100000, element.longitude  / 100000], this.icon).addTo(map);
-          marker.bindPopup(element.adresse.toLowerCase());
+    this.map = new mapboxgl.Map({
+      accessToken: environment.mapboxApiKey,
+      container: 'map',
+      style: this.style,
+      zoom: 11,
+      center: [Number(this.query.lon), Number(this.query.lat)],
+    });
+
+    this.map.addControl(new mapboxgl.NavigationControl());
+
+    if (this.query.carburant != null) {
+      this.searchService
+        .search(Number(this.query.lon), Number(this.query.lat), this.query.carburant)
+        .subscribe((data) => {
+          this.displayedData = data.results;
+          data.results.forEach((element: any) => {
+            if (this.map) {
+              const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+                element.adresse
+              );
+
+              new mapboxgl.Marker()
+                .setLngLat([
+                  element.longitude / 100000,
+                  element.latitude / 100000,
+                ])
+                .setPopup(popup)
+                .addTo(this.map);
+            }
+          });
         });
-      });
     }
-
-    const map = Leaflet.map('map').setView([44.86, -0.612], 12);
-
-    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
   }
 }
-
-// export const getLayers = (): Leaflet.Layer[] => {
-//   return [
-//     new Leaflet.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//       attribution: '&copy; OpenStreetMap contributors'
-//     } as Leaflet.TileLayerOptions),
-//   ] as Leaflet.Layer[];
-// };
-
-// export const getMarkers = (): Leaflet.Marker[] => {
-//   return [
-//     new Leaflet.Marker(new Leaflet.LatLng(43.5121264, 16.4700729), {
-//       icon: new Leaflet.Icon({
-//         iconSize: [28, 41],
-//         iconAnchor: [13, 41],
-//         iconUrl: 'assets/blue-marker.png',
-//       }),
-//       title: 'Workspace'
-//     } as Leaflet.MarkerOptions),
-//     new Leaflet.Marker(new Leaflet.LatLng(43.5074826, 16.4390046), {
-//       icon: new Leaflet.Icon({
-//         iconSize: [28, 41],
-//         iconAnchor: [13, 41],
-//         iconUrl: 'assets/blue-marker.png',
-//       }),
-//       title: 'Riva'
-//     } as Leaflet.MarkerOptions),
-//   ] as Leaflet.Marker[];
-// }

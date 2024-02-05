@@ -1,7 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable, Subject, catchError, of, tap } from 'rxjs';
+import { Observable, Subject, catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment.development';
+
+export interface MapBoxOutput {
+  attribution: string;
+  features: Feature[];
+  query: [];
+}
+
+export interface Feature {
+  place_name: string;
+  center: Number[];
+  text_fr: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -9,18 +22,25 @@ import { Observable, Subject, catchError, of, tap } from 'rxjs';
 export class SearchService {
   constructor(private http: HttpClient) { }
 
-  search(city: string, gasolineType: string): Observable<any> {
+  search(lon: Number, lat: Number, gasolineType: string): Observable<any> {
     const url =
-      `https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?where=ville%20like%20%22${city.toLowerCase()}%22&limit=10&offset=0&timezone=UTC&include_links=false&include_app_metas=false`;
+      `https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?
+        where=distance%28geom%2C%20geom%27POINT%28${lon}%20${lat}%29%27%2C%20${'10km'}%29&order_by=gazole_prix%20asc&limit=100&offset=0&timezone=UTC&include_links=false&include_app_metas=false`;
 
     return this.http.get(url).pipe(
-      tap((response) => (console.log(response))),
       catchError((error) => this.handleError(error, []))
     )
   }
 
+  searchWord(query: string) {
+    const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+    return this.http.get(url + query + '.json?language=fr&access_token=' + environment.mapboxApiKey)
+      .pipe(map((res: any) => {
+        return res.features;
+      }))
+  }
+
   private handleError(error: Error, errorValue: any) {
-    console.error(error);
     return of(errorValue);
   }
 }

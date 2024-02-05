@@ -1,0 +1,11 @@
+
+<ul
+  class="menu z-[1] p-2 shadow bg-base-100 rounded-box w-full absolute"
+>
+      <li
+        class="border-b border-b-base-content/10"
+        *ngFor="let address of addresses"
+      >
+        <span (click)="select($event)">{{ address.place_name }}</span>
+      </li>
+</ul>

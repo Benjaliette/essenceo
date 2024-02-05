@@ -1,6 +1,5 @@
 export interface SearchTerm {
-  params: {
-    carburant: string,
-    ville: string
-  }
+  carburant: string | undefined | null,
+  lat: string | undefined | null,
+  lon: string | undefined | null,
 }
