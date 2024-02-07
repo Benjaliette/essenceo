@@ -10,8 +10,6 @@ import { Router } from '@angular/router';
 import { SearchService, Feature } from '../search.service';
 import { AutocompleteSearchComponent } from '../autocomplete-search/autocomplete-search.component';
 import { CommonModule } from '@angular/common';
-import * as L from 'leaflet';
-import { environment } from '../../../environments/environment.development';
 import { NgxGpAutocompleteDirective, NgxGpAutocompleteModule } from '@angular-magic/ngx-gp-autocomplete';
 import { Loader } from '@googlemaps/js-api-loader';
 import { SearchTerm } from '../search-terms';
@@ -28,21 +26,12 @@ import { GoogleMapsModule } from '@angular/google-maps';
     GoogleMapsModule,
     AutocompleteSearchComponent,
   ],
-  providers: [
-    {
-      provide: Loader,
-      useValue: new Loader({
-        apiKey: environment.mapApiKey,
-        libraries: ['places']
-      })
-    },
-  ],
+  providers: [],
   templateUrl: './station-search.component.html',
   styleUrl: './station-search.component.scss',
 })
 export class StationSearchComponent implements OnInit {
   @ViewChild('ngxPlaces') placesRef: NgxGpAutocompleteDirective | undefined;
-  mapKey: string | undefined = environment.mapApiKey;
   myForm!: FormGroup;
   query: SearchTerm = {
     carburant: "",

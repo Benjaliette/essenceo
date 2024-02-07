@@ -5,7 +5,6 @@ import {
 } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { GasolineModule } from './gasoline/gasoline.module';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +14,6 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    LeafletModule,
     GasolineModule,
   ],
   templateUrl: './app.component.html',

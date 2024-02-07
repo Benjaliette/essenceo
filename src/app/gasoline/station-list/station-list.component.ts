@@ -3,8 +3,6 @@ import { SearchService } from '../search.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { SearchTerm } from '../search-terms';
-import { Loader } from '@googlemaps/js-api-loader';
-import { environment } from '../../../environments/environment.development';
 import * as mapboxgl from 'mapbox-gl';
 
 @Component({
@@ -41,7 +39,7 @@ export class StationListComponent implements OnInit {
     });
 
     this.map = new mapboxgl.Map({
-      accessToken: environment.mapboxApiKey,
+      accessToken: process.env["MAP_API_KEY"],
       container: 'map',
       style: this.style,
       zoom: 11,

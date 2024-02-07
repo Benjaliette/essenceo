@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, Subject, catchError, map, of, tap } from 'rxjs';
-import { environment } from '../../environments/environment.development';
 
 export interface MapBoxOutput {
   attribution: string;
@@ -34,7 +33,7 @@ export class SearchService {
 
   searchWord(query: string) {
     const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
-    return this.http.get(url + query + '.json?language=fr&access_token=' + environment.mapboxApiKey)
+    return this.http.get(url + query + '.json?language=fr&access_token=' + process.env["MAP_API_KEY"])
       .pipe(map((res: any) => {
         return res.features;
       }))
