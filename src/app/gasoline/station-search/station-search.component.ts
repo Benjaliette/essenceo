@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -16,7 +16,7 @@ import { SearchTerm } from '../search-terms';
 import { GoogleMapsModule } from '@angular/google-maps';
 
 @Component({
-  selector: 'app-station-search',
+  selector: 'station-search',
   standalone: true,
   imports: [
     NgxGpAutocompleteModule,
@@ -32,6 +32,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 })
 export class StationSearchComponent implements OnInit {
   @ViewChild('ngxPlaces') placesRef: NgxGpAutocompleteDirective | undefined;
+  @Input() isDropdown: boolean = false;
   myForm!: FormGroup;
   query: SearchTerm = {
     carburant: "",
@@ -50,7 +51,7 @@ export class StationSearchComponent implements OnInit {
     });
   }
 
-  search() {
+  search(event?: Event) {
     this.query.carburant = this.myForm.controls['gasolineType'].value;
     this.router.navigate(['resultat'], {
       queryParams: this.query,

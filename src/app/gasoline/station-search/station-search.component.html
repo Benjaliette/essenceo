@@ -1,4 +1,4 @@
-<div class="hero min-h-screen" style="background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url(https://images.pexels.com/photos/3651579/pexels-photo-3651579.jpeg);">
+<div *ngIf="!isDropdown" class="hero min-h-screen" style="background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url(https://images.pexels.com/photos/3651579/pexels-photo-3651579.jpeg);">
   <div class="hero-content flex-col lg:flex-row-reverse">
     <div class="text-center lg:text-left text-white">
       <h1 class="text-5xl font-bold">Faites le plein !</h1>
@@ -46,4 +46,46 @@
       </form>
     </div>
   </div>
+</div>
+
+<div *ngIf="isDropdown" class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+  <form class="card-body" [formGroup]="myForm" (ngSubmit)="search($event)">
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Lieu</span>
+      </label>
+      <div class="dropdown dropdown-end w-full">
+        <input
+          type="text"
+          placeholder="Chercher ..."
+          class="input input-bordered w-full"
+          formControlName="city"
+          (input)="handleInput($event)"
+        />
+        <autocomplete-search
+          *ngIf="addresses && addresses.length > 2"
+          [addresses]="addresses"
+          (onSelect)="getAddress($event)"
+        ></autocomplete-search>
+      </div>
+    </div>
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Quel carburant ?</span>
+      </label>
+      <select class="select select-bordered w-full max-w-xs" formControlName="gasolineType">
+        <option value="sp95">Super 95</option>
+        <option value="e10">Super 95 (E10)</option>
+        <option value="sp98">Super 98</option>
+        <option value="gazole">Gazole</option>
+        <option value="gplc">GPL</option>
+      </select>
+    </div>
+    <div class="form-control mt-6">
+      <button class="btn btn-success text-white" [disabled]="myForm.invalid">
+        COMPAREZ
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M11.5 7a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-.82 4.74a6 6 0 1 1 1.06-1.06l3.04 3.04a.75.75 0 1 1-1.06 1.06z" clip-rule="evenodd"/></svg>
+      </button>
+    </div>
+  </form>
 </div>

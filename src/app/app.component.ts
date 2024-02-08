@@ -5,6 +5,7 @@ import {
 } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { GasolineModule } from './gasoline/gasoline.module';
+import { StationSearchComponent } from './gasoline/station-search/station-search.component';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { GasolineModule } from './gasoline/gasoline.module';
     ReactiveFormsModule,
     RouterModule,
     GasolineModule,
+    StationSearchComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
