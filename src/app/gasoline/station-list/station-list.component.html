@@ -1,47 +1,23 @@
 <div class="map match-parent" id="map"></div>
-
-<!-- <google-map
-  [height]=height
-  [width]=width
-  [zoom]=13
-  [options]="mapOptions"
-  [center]="mapOptions.center!"
-  (click)="moveMap($event)"
->
-
-  <map-marker
-    #mapMarker="mapMarker"
-    *ngFor="let marker of markers"
-    [position]="marker.getPosition()!"
-    [title]="marker.getTitle()!"
-    (mapClick)="openMapInfo(marker.getTitle()!, mapMarker)"
-  >
-  </map-marker>
-
-  <map-info-window>{{ infoContent }}</map-info-window>
-
-  <map-polyline [options]="polylineOptions" ></map-polyline>
-</google-map> -->
-
-<div class="overflow-x-auto">
-  <table class="table">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Adresse</th>
-        <th>SP98</th>
-        <th>SP95</th>
-        <th>Diesel</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of displayedData; let i = index">
-        <th>{{ i + 1 }}</th>
-        <td>{{ data.adresse + " " + data.cp + " " + data.ville }}</td>
-        <td>{{ data.sp98_prix }}</td>
-        <td>{{ data.e10_prix }}</td>
-        <td>{{ data.gazole_prix }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="container md-auto px-4">
+  <div class="card w-8/12 bg-base-100 shadow-xl my-5 mx-auto" *ngFor="let data of displayedData">
+    <div class="card-body">
+      <div class="card-body__main">
+        <h2 class="card-title">{{ data | addressFormatter }}</h2>
+        <div class="flex flex-col items-end">
+          <p class="text-sm">{{query.carburant | gasolineFormatter}}</p>
+          <p class="font-bold text-lg">{{ query.carburant | gasolineFormatter:data:'getPrice' }} €</p>
+        </div>
+        <button class="btn btn-circle" (click)="goToLocation(data)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M7.515 12.53a.5.5 0 0 0 .908-.029l4.596-10.865a.5.5 0 0 0-.655-.655L1.5 5.577a.5.5 0 0 0-.029.908l3.88 1.94a.5.5 0 0 1 .225.224l1.94 3.88Z"/></svg>
+        </button>
+      </div>
+      <ul>
+        <p *ngIf="parseJSON(data.horaires)?.jour == null" class="italic">Pas d'horaires définies</p>
+        <li *ngFor="let jour of parseJSON(data.horaires)?.jour">
+          {{ jour | scheduleFormatter}}
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

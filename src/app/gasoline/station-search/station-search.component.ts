@@ -46,7 +46,7 @@ export class StationSearchComponent implements OnInit {
   ngOnInit(): void {
     this.myForm = new FormGroup({
       city: new FormControl('', Validators.required),
-      gasolineType: new FormControl('Super 95 (E10)', Validators.required),
+      gasolineType: new FormControl('', Validators.required),
     });
   }
 

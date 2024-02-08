@@ -24,7 +24,7 @@ export class SearchService {
   search(lon: Number, lat: Number, gasolineType: string): Observable<any> {
     const url =
       `https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?
-        where=distance%28geom%2C%20geom%27POINT%28${lon}%20${lat}%29%27%2C%20${'10km'}%29&order_by=gazole_prix%20asc&limit=100&offset=0&timezone=UTC&include_links=false&include_app_metas=false`;
+        where=distance%28geom%2C%20geom%27POINT%28${lon}%20${lat}%29%27%2C%20${'3km'}%29&order_by=${gasolineType}_prix%20asc&limit=100&offset=0&lang=fr&timezone=Europe%2FParis&include_links=false&include_app_metas=false`;
 
     return this.http.get(url).pipe(
       catchError((error) => this.handleError(error, []))

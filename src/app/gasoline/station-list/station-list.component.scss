@@ -4,3 +4,20 @@
   margin-bottom: 1rem;
   padding: 0;
 }
+
+.card-body__main {
+  display: flex;
+  justify-content: space-between;
+
+  p {
+    width: fit-content;
+  }
+}
+
+::ng-deep .map-popup h3 {
+  margin: 0;
+  padding: 10px;
+  border-radius: 3px 3px 0 0;
+  font-weight: 700;
+  margin-top: -15px;
+}
